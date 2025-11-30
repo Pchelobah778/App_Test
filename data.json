@@ -3,44 +3,32 @@
     {
       "id": "physics",
       "name": "Физика",
-      "url": "conspects/physics.html",
-      "x": 400,
-      "y": 50
+      "url": "notes/physics.html"
     },
     {
       "id": "mechanics", 
       "name": "Механика",
-      "url": "mechanics.html",
-      "x": 200,
-      "y": 150
+      "url": "notes/mechanics.html"
     },
     {
       "id": "electromagnetism",
-      "name": "Электромагнетизм",
-      "url": "electromagnetism.html", 
-      "x": 400,
-      "y": 150
+      "name": "Электромагнетизм", 
+      "url": "notes/electromagnetism.html"
     },
     {
       "id": "optics",
       "name": "Оптика",
-      "url": "optics.html",
-      "x": 600,
-      "y": 150
+      "url": "notes/optics.html"
     },
     {
       "id": "kinematics",
       "name": "Кинематика",
-      "url": "kinematics.html",
-      "x": 100,
-      "y": 250
+      "url": "notes/kinematics.html"
     },
     {
       "id": "dynamics",
       "name": "Динамика",
-      "url": "dynamics.html", 
-      "x": 300,
-      "y": 250
+      "url": "notes/dynamics.html"
     }
   ],
   "links": [
