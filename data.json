@@ -1,41 +1,11 @@
 {
   "nodes": [
-    {
-      "id": "physics",
-      "name": "Физика",
-      "url": "notes/physics.html"
-    },
-    {
-      "id": "mechanics", 
-      "name": "Механика",
-      "url": "notes/mechanics.html"
-    },
-    {
-      "id": "electromagnetism",
-      "name": "Электромагнетизм", 
-      "url": "notes/electromagnetism.html"
-    },
-    {
-      "id": "optics",
-      "name": "Оптика",
-      "url": "notes/optics.html"
-    },
-    {
-      "id": "kinematics",
-      "name": "Кинематика",
-      "url": "notes/kinematics.html"
-    },
-    {
-      "id": "dynamics",
-      "name": "Динамика",
-      "url": "notes/dynamics.html"
-    }
+    {"id": "physics", "name": "Физика", "url": "notes/physics.html"},
+    {"id": "mechanics", "name": "Механика", "url": "notes/mechanics.html"},
+    {"id": "electromagnetism", "name": "Электромагнетизм", "url": "notes/electromagnetism.html"}
   ],
   "links": [
     {"source": "physics", "target": "mechanics"},
-    {"source": "physics", "target": "electromagnetism"},
-    {"source": "physics", "target": "optics"},
-    {"source": "mechanics", "target": "kinematics"},
-    {"source": "mechanics", "target": "dynamics"}
+    {"source": "physics", "target": "electromagnetism"}
   ]
 }
