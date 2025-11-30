@@ -1,0 +1,53 @@
+{
+  "nodes": [
+    {
+      "id": "physics",
+      "name": "Физика",
+      "url": "conspects/physics.html",
+      "x": 400,
+      "y": 50
+    },
+    {
+      "id": "mechanics", 
+      "name": "Механика",
+      "url": "mechanics.html",
+      "x": 200,
+      "y": 150
+    },
+    {
+      "id": "electromagnetism",
+      "name": "Электромагнетизм",
+      "url": "electromagnetism.html", 
+      "x": 400,
+      "y": 150
+    },
+    {
+      "id": "optics",
+      "name": "Оптика",
+      "url": "optics.html",
+      "x": 600,
+      "y": 150
+    },
+    {
+      "id": "kinematics",
+      "name": "Кинематика",
+      "url": "kinematics.html",
+      "x": 100,
+      "y": 250
+    },
+    {
+      "id": "dynamics",
+      "name": "Динамика",
+      "url": "dynamics.html", 
+      "x": 300,
+      "y": 250
+    }
+  ],
+  "links": [
+    {"source": "physics", "target": "mechanics"},
+    {"source": "physics", "target": "electromagnetism"},
+    {"source": "physics", "target": "optics"},
+    {"source": "mechanics", "target": "kinematics"},
+    {"source": "mechanics", "target": "dynamics"}
+  ]
+}

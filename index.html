@@ -1,7 +1,262 @@
 <!DOCTYPE html>
+<html lang="ru">
 <head>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конспекты по физике</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        #graph {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: #fafafa;
+        }
+        
+        .node {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .node:hover {
+            filter: brightness(1.1);
+            transform: scale(1.05);
+        }
+        
+        .node-circle {
+            fill: #4CAF50;
+            stroke: #2E7D32;
+            stroke-width: 2px;
+            r: 25;
+        }
+        
+        .node-text {
+            font-size: 12px;
+            font-weight: bold;
+            fill: white;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+        
+        .link {
+            stroke: #999;
+            stroke-width: 2px;
+            stroke-opacity: 0.6;
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background: #45a049;
+        }
+    </style>
 </head>
 <body>
-    Текст
+    <div class="container">
+        <h1>📚 Конспекты по физике</h1>
+        
+        <div class="controls">
+            <button onclick="zoomIn()">Увеличить</button>
+            <button onclick="zoomOut()">Уменьшить</button>
+            <button onclick="resetZoom()">Сброс</button>
+            <button onclick="centerGraph()">Центрировать</button>
+        </div>
+        
+        <div id="graph"></div>
+    </div>
+
+    <script>
+        // Замени эту ссылку на RAW ссылку твоего data.json на GitHub
+        const DATA_URL = 'https://raw.githubusercontent.com/ТВОЙ_USERNAME/ТВОЙ_РЕПОЗИТОРИЙ/main/data.json';
+        
+        let svg, g, zoom;
+        let nodes = [], links = [];
+        let simulation;
+
+        // Инициализация графа
+        async function initGraph() {
+            // Загружаем данные
+            const data = await d3.json(DATA_URL);
+            nodes = data.nodes;
+            links = data.links;
+
+            // Создаем SVG
+            svg = d3.select('#graph')
+                .append('svg')
+                .attr('width', '100%')
+                .attr('height', '100%');
+            
+            g = svg.append('g');
+            
+            // Настройка зума
+            zoom = d3.zoom()
+                .scaleExtent([0.1, 4])
+                .on('zoom', (event) => {
+                    g.attr('transform', event.transform);
+                });
+            
+            svg.call(zoom);
+            
+            // Создаем связи
+            const link = g.append('g')
+                .selectAll('line')
+                .data(links)
+                .enter()
+                .append('line')
+                .attr('class', 'link')
+                .attr('marker-end', 'url(#arrowhead)');
+            
+            // Создаем узлы
+            const node = g.append('g')
+                .selectAll('g')
+                .data(nodes)
+                .enter()
+                .append('g')
+                .attr('class', 'node')
+                .call(d3.drag()
+                    .on('start', dragStarted)
+                    .on('drag', dragged)
+                    .on('end', dragEnded)
+                );
+            
+            // Добавляем круги к узлам
+            node.append('circle')
+                .attr('class', 'node-circle')
+                .attr('r', 25);
+            
+            // Добавляем текст к узлам
+            node.append('text')
+                .attr('class', 'node-text')
+                .attr('dy', 4)
+                .text(d => d.name);
+            
+            // Обработчик клика по узлу
+            node.on('click', (event, d) => {
+                if (d.url) {
+                    window.open(d.url, '_blank');
+                }
+            });
+            
+            // Симуляция сил
+            simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(links).id(d => d.id).distance(100))
+                .force('charge', d3.forceManyBody().strength(-300))
+                .force('center', d3.forceCenter(
+                    svg.node().getBoundingClientRect().width / 2,
+                    svg.node().getBoundingClientRect().height / 2
+                ))
+                .force('collision', d3.forceCollide().radius(35));
+            
+            // Обновление позиций
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+                
+                node
+                    .attr('transform', d => `translate(${d.x},${d.y})`);
+            });
+            
+            // Стрелка для связей
+            svg.append('defs').append('marker')
+                .attr('id', 'arrowhead')
+                .attr('viewBox', '-0 -5 10 10')
+                .attr('refX', 30)
+                .attr('refY', 0)
+                .attr('orient', 'auto')
+                .attr('markerWidth', 6)
+                .attr('markerHeight', 6)
+                .attr('xoverflow', 'visible')
+                .append('svg:path')
+                .attr('d', 'M 0,-5 L 10,0 L 0,5')
+                .attr('fill', '#999')
+                .style('stroke', 'none');
+        }
+        
+        // Функции для drag'n'drop
+        function dragStarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        function dragEnded(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        // Функции управления
+        function zoomIn() {
+            svg.transition().call(zoom.scaleBy, 1.5);
+        }
+        
+        function zoomOut() {
+            svg.transition().call(zoom.scaleBy, 0.75);
+        }
+        
+        function resetZoom() {
+            svg.transition().call(zoom.transform, d3.zoomIdentity);
+        }
+        
+        function centerGraph() {
+            const bounds = svg.node().getBoundingClientRect();
+            svg.transition().call(
+                zoom.transform,
+                d3.zoomIdentity.translate(
+                    bounds.width / 2 - (nodes[0]?.x || 0),
+                    bounds.height / 2 - (nodes[0]?.y || 0)
+                )
+            );
+        }
+        
+        // Запускаем при загрузке
+        initGraph();
+    </script>
 </body>
+</html>
