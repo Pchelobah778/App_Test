@@ -102,7 +102,6 @@ function initGraph() {
         const nodeGroup = nodesGroup.append('g')
             .attr('class', 'node')
             .attr('data-id', node.id)
-            .attr('transform', `translate(${node.x},${node.y})`);
         
         // Размер квадрата
         const side = (node.radius) * 1.8;
