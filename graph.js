@@ -110,22 +110,12 @@ function initGraph() {
                 }
             })
             .on('mouseover', function(event) {
-                // Только изменение цвета при наведении, без изменения размера
-                d3.select(this).select('.node-shape')
-                    .transition()
-                    .duration(200)
-                    .attr('fill', adjustColor(node.color || nodeDefaults.color || '#4e73df', 20));
-                
-                showNodeInfo(node);
+
             })
             .on('mouseout', function(event) {
-                d3.select(this).select('.node-shape')
-                    .transition()
-                    .duration(200)
-                    .attr('fill', node.color || nodeDefaults.color || '#4e73df');
+
             });
         
-        // Рисуем квадрат (все узлы квадратные)
         const size = (node.radius || nodeDefaults.radius || 40) * 1.414; // Диагональ квадрата = сторона * √2
         const side = size / Math.sqrt(2); // Сторона квадрата
         
