@@ -1,41 +1,139 @@
 {
+  "settings": {
+    "canvas": {
+      "width": 1200,
+      "height": 800,
+      "backgroundColor": "#f8f9fa",
+      "padding": 50
+    },
+    "nodeDefaults": {
+      "radius": 40,
+      "color": "#4e73df",
+      "textColor": "#ffffff",
+      "fontSize": "14px",
+      "borderColor": "#2e59d9",
+      "borderWidth": 2,
+      "shape": "circle"
+    },
+    "edgeDefaults": {
+      "color": "#858796",
+      "width": 3,
+      "lineStyle": "straight",
+      "arrowhead": true,
+      "arrowSize": 8,
+      "curvature": 0
+    }
+  },
   "nodes": [
     {
       "id": "physics",
-      "name": "Физика",
-      "url": "notes/physics.html"
+      "label": "Физика",
+      "link": "notes/physics.html",
+      "x": 600,
+      "y": 100,
+      "color": "#4e73df",
+      "radius": 60,
+      "shape": "circle",
+      "borderColor": "#2e59d9",
+      "borderWidth": 3
     },
     {
-      "id": "mechanics", 
-      "name": "Механика",
-      "url": "notes/mechanics.html"
+      "id": "mechanics",
+      "label": "Механика",
+      "link": "notes/mechanics.html",
+      "x": 400,
+      "y": 300,
+      "color": "#1cc88a",
+      "radius": 45,
+      "shape": "rounded-rect",
+      "borderRadius": 10
+    },
+    {
+      "id": "thermodynamics",
+      "label": "Термодинамика",
+      "link": "notes/thermodynamics.html",
+      "x": 600,
+      "y": 300,
+      "color": "#36b9cc",
+      "radius": 45,
+      "shape": "hexagon"
     },
     {
       "id": "electromagnetism",
-      "name": "Электромагнетизм",
-      "url": "notes/electromagnetism.html"
-    },
-    {
-      "id": "optics",
-      "name": "Оптика",
-      "url": "notes/optics.html"
+      "label": "Электромагнетизм",
+      "link": "notes/electromagnetism.html",
+      "x": 800,
+      "y": 300,
+      "color": "#f6c23e",
+      "radius": 45,
+      "shape": "circle"
     },
     {
       "id": "kinematics",
-      "name": "Кинематика",
-      "url": "notes/kinematics.html"
+      "label": "Кинематика",
+      "link": "notes/kinematics.html",
+      "x": 300,
+      "y": 500,
+      "color": "#1cc88a",
+      "radius": 35,
+      "shape": "circle",
+      "opacity": 0.9
     },
     {
       "id": "dynamics",
-      "name": "Динамика",
-      "url": "notes/dynamics.html"
+      "label": "Динамика",
+      "link": "notes/dynamics.html",
+      "x": 500,
+      "y": 500,
+      "color": "#1cc88a",
+      "radius": 35,
+      "shape": "circle"
     }
   ],
-  "links": [
-    {"source": "physics", "target": "mechanics"},
-    {"source": "physics", "target": "electromagnetism"},
-    {"source": "physics", "target": "optics"},
-    {"source": "mechanics", "target": "kinematics"},
-    {"source": "mechanics", "target": "dynamics"}
+  "edges": [
+    {
+      "source": "physics",
+      "target": "mechanics",
+      "color": "#1cc88a",
+      "width": 3,
+      "lineStyle": "curved",
+      "curvature": 0.3,
+      "arrowhead": true
+    },
+    {
+      "source": "physics",
+      "target": "thermodynamics",
+      "color": "#36b9cc",
+      "width": 3,
+      "lineStyle": "straight",
+      "dashed": false
+    },
+    {
+      "source": "physics",
+      "target": "electromagnetism",
+      "color": "#f6c23e",
+      "width": 4,
+      "lineStyle": "curved",
+      "curvature": -0.3,
+      "arrowhead": true,
+      "arrowSize": 10
+    },
+    {
+      "source": "mechanics",
+      "target": "kinematics",
+      "color": "#1cc88a",
+      "width": 2,
+      "lineStyle": "straight",
+      "arrowhead": false
+    },
+    {
+      "source": "mechanics",
+      "target": "dynamics",
+      "color": "#1cc88a",
+      "width": 2,
+      "lineStyle": "straight",
+      "dashed": true,
+      "dashArray": "5,5"
+    }
   ]
 }
