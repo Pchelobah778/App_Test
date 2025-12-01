@@ -32,10 +32,21 @@
       "x": 600,
       "y": 100,
       "color": "#4e73df",
-      "radius": 60,
+      "radius": 75,
       "shape": "square",
       "borderColor": "#2e59d9",
       "borderWidth": 3
+    },
+    {
+      "id": "math_analysis",
+      "label": "МатАн для Физики",
+      "link": "notes/math_analysis.html",
+      "x": 200,
+      "y": 300,
+      "color": "#1cc88a",
+      "radius": 60,
+      "shape": "square",
+      "borderRadius": 5
     },
     {
       "id": "mechanics",
@@ -44,7 +55,7 @@
       "x": 400,
       "y": 300,
       "color": "#1cc88a",
-      "radius": 45,
+      "radius": 60,
       "shape": "square",
       "borderRadius": 5
     },
@@ -55,7 +66,7 @@
       "x": 600,
       "y": 300,
       "color": "#36b9cc",
-      "radius": 45,
+      "radius": 60,
       "shape": "square"
     },
     {
@@ -65,7 +76,7 @@
       "x": 800,
       "y": 300,
       "color": "#f6c23e",
-      "radius": 45,
+      "radius": 60,
       "shape": "square"
     },
     {
@@ -75,7 +86,7 @@
       "x": 300,
       "y": 500,
       "color": "#1cc88a",
-      "radius": 35,
+      "radius": 60,
       "shape": "square",
       "opacity": 0.9
     },
@@ -86,7 +97,7 @@
       "x": 500,
       "y": 500,
       "color": "#1cc88a",
-      "radius": 35,
+      "radius": 60,
       "shape": "square"
     }
   ],
@@ -94,6 +105,15 @@
     {
       "source": "physics",
       "target": "mechanics",
+      "color": "#1cc88a",
+      "width": 3,
+      "lineStyle": "curved",
+      "curvature": 0.3,
+      "arrowhead": false
+    },
+    {
+      "source": "physics",
+      "target": "math_analysis",
       "color": "#1cc88a",
       "width": 3,
       "lineStyle": "curved",
