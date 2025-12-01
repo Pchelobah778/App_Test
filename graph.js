@@ -102,7 +102,23 @@ function initGraph() {
         const nodeGroup = nodesGroup.append('g')
             .attr('class', 'node')
             .attr('data-id', node.id)
-            .attr('transform', `translate(${node.x},${node.y})`)
+            .attr('transform', `translate(${node.x},${node.y})`);
+        
+        // Размер квадрата
+        const side = (node.radius || nodeDefaults.radius || 40) * 1.8; // Увеличиваем для квадратов
+        
+        // Создаем квадрат
+        const rect = nodeGroup.append('rect')
+            .attr('class', 'node-shape')
+            .attr('x', -side/2)
+            .attr('y', -side/2)
+            .attr('width', side)
+            .attr('height', side)
+            .attr('rx', node.borderRadius || 5)
+            .attr('ry', node.borderRadius || 5)
+            .attr('fill', node.color || nodeDefaults.color || '#4e73df')
+            .attr('stroke', node.borderColor || nodeDefaults.borderColor || '#2e59d9')
+            .attr('stroke-width', node.borderWidth || nodeDefaults.borderWidth || 2)
             .style('cursor', 'pointer')
             .on('click', () => {
                 if (node.link) {
@@ -110,25 +126,29 @@ function initGraph() {
                 }
             })
             .on('mouseover', function(event) {
+                // Плавное увеличение при наведении (только визуальный эффект)
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr('width', side * 1.05)
+                    .attr('height', side * 1.05)
+                    .attr('x', -side/2 * 1.05)
+                    .attr('y', -side/2 * 1.05);
+                
                 showNodeInfo(node);
+            })
+            .on('mouseout', function(event) {
+                // Возврат к исходному размеру
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr('width', side)
+                    .attr('height', side)
+                    .attr('x', -side/2)
+                    .attr('y', -side/2);
             });
         
-        const size = (node.radius || nodeDefaults.radius || 40) * 1.414; // Диагональ квадрата = сторона * √2
-        const side = size / Math.sqrt(2); // Сторона квадрата
-        
-        nodeGroup.append('rect')
-            .attr('class', 'node-shape')
-            .attr('x', -side/2)
-            .attr('y', -side/2)
-            .attr('width', side)
-            .attr('height', side)
-            .attr('rx', node.borderRadius || 5) // Закругление углов (можно настроить)
-            .attr('ry', node.borderRadius || 5)
-            .attr('fill', node.color || nodeDefaults.color || '#4e73df')
-            .attr('stroke', node.borderColor || nodeDefaults.borderColor || '#2e59d9')
-            .attr('stroke-width', node.borderWidth || nodeDefaults.borderWidth || 2);
-        
-        // Добавляем текст
+        // Добавляем текст - отключаем события мыши для текста
         nodeGroup.append('text')
             .attr('class', 'node-label')
             .attr('text-anchor', 'middle')
@@ -136,26 +156,9 @@ function initGraph() {
             .attr('fill', node.textColor || nodeDefaults.textColor || '#ffffff')
             .attr('font-size', node.fontSize || nodeDefaults.fontSize || '14px')
             .attr('font-weight', 'bold')
+            .style('pointer-events', 'none') // Важно: отключаем события мыши для текста
             .text(node.label);
     });
-}
-
-// Вспомогательная функция для изменения цвета
-function adjustColor(color, amount) {
-    // Простой способ осветлить цвет
-    return d3.color(color).brighter(amount/20);
-}
-
-// Генерация точек для шестиугольника (больше не используется, но оставлю на всякий случай)
-function generateHexagonPoints(radius) {
-    const points = [];
-    for (let i = 0; i < 6; i++) {
-        const angle = Math.PI / 3 * i;
-        const x = radius * Math.cos(angle);
-        const y = radius * Math.sin(angle);
-        points.push(`${x},${y}`);
-    }
-    return points.join(' ');
 }
 
 // Показ информации об узле
