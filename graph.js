@@ -119,7 +119,6 @@ function initGraph() {
             .attr('fill', node.color || nodeDefaults.color || '#4e73df')
             .attr('stroke', node.borderColor || nodeDefaults.borderColor || '#2e59d9')
             .attr('stroke-width', node.borderWidth || nodeDefaults.borderWidth || 2)
-            .style('cursor', node.link ? 'pointer' : 'default');
         
         // Добавляем текст
         nodeGroup.append('text')
