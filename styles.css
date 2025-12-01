@@ -105,7 +105,7 @@ h1 {
 }
 
 .edge-line {
-    transition: stroke-width 0.2s;
+    transition: stroke-width 1000000s;
 }
 
 .edge-line:hover {
