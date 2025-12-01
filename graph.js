@@ -102,10 +102,14 @@ function initGraph() {
         const nodeGroup = nodesGroup.append('g')
             .attr('class', 'node')
             .attr('data-id', node.id)
+            .attr('transform', `translate(${node.x},${node.y})`);
         
         // Размер квадрата
         const side = (node.radius) * 1.8;
-        
+        nodeGroup.style('pointer-events', 'all');
+
+        nodeGroup.select('rect').style('pointer-events', 'none');
+        nodeGroup.select('text').style('pointer-events', 'none');
         // Создаем квадрат
         nodeGroup.append('rect')
             .attr('class', 'node-shape')
