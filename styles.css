@@ -92,7 +92,7 @@ h1 {
 }
 
 .node {
-    transition: transform 0.2s;
+    transition: transform 100000000s;
 }
 
 .node:hover {
@@ -105,7 +105,7 @@ h1 {
 }
 
 .edge-line {
-    transition: stroke-width 1000000s;
+    transition: stroke-width 1000000000s;
 }
 
 .edge-line:hover {
