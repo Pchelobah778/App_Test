@@ -12,11 +12,11 @@ async function loadData() {
         config = await response.json();
         nodes = config.nodes;
         edges = config.edges;
-        
+
         initGraph();
     } catch (error) {
         console.error('Ошибка загрузки data.json:', error);
-        document.getElementById('graph-container').innerHTML = 
+        document.getElementById('graph-container').innerHTML =
             '<p class="error">Ошибка загрузки данных. Проверьте файл data.json</p>';
     }
 }
@@ -27,53 +27,52 @@ function initGraph() {
     const canvas = settings.canvas || { width: 1200, height: 800 };
     const nodeDefaults = settings.nodeDefaults || {};
     const edgeDefaults = settings.edgeDefaults || {};
-    
+
     // Очистка SVG
     d3.select('#graph-svg').selectAll('*').remove();
-    
+
     // Создание SVG
     const svg = d3.select('#graph-svg')
         .attr('width', canvas.width)
         .attr('height', canvas.height)
         .style('background-color', canvas.backgroundColor || '#f8f9fa');
-    
-    // Добавление зума
+
     const g = svg.append('g');
-    
+
+    // Зум — отключаем обработку, если событие произошло по узлу
     zoom = d3.zoom()
-        .scaleExtent([0.1, 4])
+        .scaleExtent([0.2, 4])
+        .filter(event => !event.target.closest('.node')) // ← ключевое исправление
         .on('zoom', (event) => {
             g.attr('transform', event.transform);
             currentZoom = event.transform.k;
-            document.getElementById('zoom-level').textContent = 
+            document.getElementById('zoom-level').textContent =
                 `${Math.round(currentZoom * 100)}%`;
         });
-    
+
     svg.call(zoom);
-    
+
     // Рисуем ребра
     const edgesGroup = g.append('g').attr('class', 'edges');
-    
+
     edges.forEach(edge => {
         const sourceNode = nodes.find(n => n.id === edge.source);
         const targetNode = nodes.find(n => n.id === edge.target);
-        
         if (!sourceNode || !targetNode) return;
-        
+
         const line = edgesGroup.append('g');
-        
-        // Рисуем линию
+
         if (edge.lineStyle === 'curved') {
-            // Квадратичная кривая Безье
+            // Кривая Безье
             const midX = (sourceNode.x + targetNode.x) / 2;
             const midY = (sourceNode.y + targetNode.y) / 2;
             const dx = targetNode.x - sourceNode.x;
             const dy = targetNode.y - sourceNode.y;
             const curvature = edge.curvature || 0;
-            
+
             const cp1x = midX + curvature * dy;
             const cp1y = midY - curvature * dx;
-            
+
             line.append('path')
                 .attr('d', `M${sourceNode.x},${sourceNode.y} Q${cp1x},${cp1y} ${targetNode.x},${targetNode.y}`)
                 .attr('fill', 'none')
@@ -81,6 +80,7 @@ function initGraph() {
                 .attr('stroke-width', edge.width || edgeDefaults.width || 2)
                 .attr('stroke-dasharray', edge.dashed ? (edge.dashArray || '5,5') : null)
                 .attr('class', 'edge-line');
+
         } else {
             // Прямая линия
             line.append('line')
@@ -94,62 +94,48 @@ function initGraph() {
                 .attr('class', 'edge-line');
         }
     });
-    
-    // Рисуем узлы - ВСЕ КВАДРАТНЫЕ
+
+    // Рисуем узлы — квадратные
     const nodesGroup = g.append('g').attr('class', 'nodes');
-    
+
     nodes.forEach(node => {
         const nodeGroup = nodesGroup.append('g')
             .attr('class', 'node')
             .attr('data-id', node.id)
-            .attr('transform', `translate(${node.x},${node.y})`);
-        
-        // Размер квадрата
-        const side = (node.radius) * 1.8;
-        nodeGroup.style('pointer-events', 'all');
+            .attr('transform', `translate(${node.x},${node.y})`)
+            .style('cursor', node.link ? 'pointer' : 'default');
 
-        nodeGroup.select('rect').style('pointer-events', 'none');
-        nodeGroup.select('text').style('pointer-events', 'none');
-        // Создаем квадрат
+        // Размер квадрата
+        const side = node.radius * 1.8;
+
+        // Квадрат узла
         nodeGroup.append('rect')
-            .attr('class', 'node-shape')
-            .attr('x', -side/2)
-            .attr('y', -side/2)
+            .attr('x', -side / 2)
+            .attr('y', -side / 2)
             .attr('width', side)
             .attr('height', side)
             .attr('rx', node.borderRadius || 5)
             .attr('ry', node.borderRadius || 5)
             .attr('fill', node.color || nodeDefaults.color || '#4e73df')
             .attr('stroke', node.borderColor || nodeDefaults.borderColor || '#2e59d9')
-            .attr('stroke-width', node.borderWidth || nodeDefaults.borderWidth || 2)
-        
-        // Добавляем текст
+            .attr('stroke-width', node.borderWidth || nodeDefaults.borderWidth || 2);
+
+        // Текст
         nodeGroup.append('text')
             .attr('class', 'node-label')
             .attr('text-anchor', 'middle')
             .attr('dy', '0.3em')
+            .style('pointer-events', 'none')
             .attr('fill', node.textColor || nodeDefaults.textColor || '#ffffff')
             .attr('font-size', node.fontSize || nodeDefaults.fontSize || '14px')
             .attr('font-weight', 'bold')
-            .style('pointer-events', 'none')
             .text(node.label);
-        
-        // Обработчик клика для всей группы узла
+
+        // Клик на узел
         nodeGroup.on('click', () => {
-            if (node.link) {
-                window.open(node.link, '_blank');
-            }
+            if (node.link) window.open(node.link, '_blank');
         });
     });
-}
-
-// Показ информации об узле (убрана привязка к наведению)
-function showNodeInfo(node) {
-    const infoDiv = document.getElementById('node-info');
-    infoDiv.innerHTML = `
-        <strong>${node.label}</strong><br>
-        ${node.link ? `Ссылка: <a href="${node.link}" target="_blank">${node.link}</a>` : 'Нет ссылки'}
-    `;
 }
 
 // Управление зумом
