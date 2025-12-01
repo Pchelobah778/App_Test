@@ -120,18 +120,10 @@ function initGraph() {
                 }
             })
             .on('mouseover', function(event) {
-                d3.select(this).select('.node-shape')
-                    .transition()
-                    .duration(200)
-                    .attr('r', (node.radius || nodeDefaults.radius) * 1.1);
                 
-                showNodeInfo(node);
             })
             .on('mouseout', function(event) {
-                d3.select(this).select('.node-shape')
-                    .transition()
-                    .duration(200)
-                    .attr('r', node.radius || nodeDefaults.radius);
+;
             });
         
         // Рисуем форму узла
