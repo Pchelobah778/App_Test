@@ -105,11 +105,10 @@ function initGraph() {
             .attr('transform', `translate(${node.x},${node.y})`);
         
         // Размер квадрата
-        const side = (node.radius || nodeDefaults.radius || 40) * 1.8; // Увеличиваем для квадратов
+        const side = (node.radius || nodeDefaults.radius || 40) * 1.8;
         
         // Создаем квадрат
-        // Создаем квадрат
-        const rect = nodeGroup.append('rect')
+        nodeGroup.append('rect')
             .attr('class', 'node-shape')
             .attr('x', -side/2)
             .attr('y', -side/2)
@@ -120,30 +119,29 @@ function initGraph() {
             .attr('fill', node.color || nodeDefaults.color || '#4e73df')
             .attr('stroke', node.borderColor || nodeDefaults.borderColor || '#2e59d9')
             .attr('stroke-width', node.borderWidth || nodeDefaults.borderWidth || 2)
-            .style('cursor', 'pointer')
-            .on('click', () => {
-                if (node.link) {
-                    window.open(node.link, '_blank');
-                }
-            })
-            .on('mouseover', function(event) {
-                showNodeInfo(node);
-            });
-                
-                // Добавляем текст - отключаем события мыши для текста
-                nodeGroup.append('text')
-                    .attr('class', 'node-label')
-                    .attr('text-anchor', 'middle')
-                    .attr('dy', '0.3em')
-                    .attr('fill', node.textColor || nodeDefaults.textColor || '#ffffff')
-                    .attr('font-size', node.fontSize || nodeDefaults.fontSize || '14px')
-                    .attr('font-weight', 'bold')
-                    .style('pointer-events', 'none') // Важно: отключаем события мыши для текста
-                    .text(node.label);
-            });
-        }
+            .style('cursor', node.link ? 'pointer' : 'default');
+        
+        // Добавляем текст
+        nodeGroup.append('text')
+            .attr('class', 'node-label')
+            .attr('text-anchor', 'middle')
+            .attr('dy', '0.3em')
+            .attr('fill', node.textColor || nodeDefaults.textColor || '#ffffff')
+            .attr('font-size', node.fontSize || nodeDefaults.fontSize || '14px')
+            .attr('font-weight', 'bold')
+            .style('pointer-events', 'none')
+            .text(node.label);
+        
+        // Обработчик клика для всей группы узла
+        nodeGroup.on('click', () => {
+            if (node.link) {
+                window.open(node.link, '_blank');
+            }
+        });
+    });
+}
 
-// Показ информации об узле
+// Показ информации об узле (убрана привязка к наведению)
 function showNodeInfo(node) {
     const infoDiv = document.getElementById('node-info');
     infoDiv.innerHTML = `
