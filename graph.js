@@ -108,6 +108,7 @@ function initGraph() {
         const side = (node.radius || nodeDefaults.radius || 40) * 1.8; // Увеличиваем для квадратов
         
         // Создаем квадрат
+        // Создаем квадрат
         const rect = nodeGroup.append('rect')
             .attr('class', 'node-shape')
             .attr('x', -side/2)
@@ -126,40 +127,21 @@ function initGraph() {
                 }
             })
             .on('mouseover', function(event) {
-                // Плавное увеличение при наведении (только визуальный эффект)
-                d3.select(this)
-                    .transition()
-                    .duration(100)
-                    .attr('width', side * 1.05)
-                    .attr('height', side * 1.05)
-                    .attr('x', -side/2 * 1.05)
-                    .attr('y', -side/2 * 1.05);
-                
                 showNodeInfo(node);
-            })
-            .on('mouseout', function(event) {
-                // Возврат к исходному размеру
-                d3.select(this)
-                    .transition()
-                    .duration(100)
-                    .attr('width', side)
-                    .attr('height', side)
-                    .attr('x', -side/2)
-                    .attr('y', -side/2);
             });
-        
-        // Добавляем текст - отключаем события мыши для текста
-        nodeGroup.append('text')
-            .attr('class', 'node-label')
-            .attr('text-anchor', 'middle')
-            .attr('dy', '0.3em')
-            .attr('fill', node.textColor || nodeDefaults.textColor || '#ffffff')
-            .attr('font-size', node.fontSize || nodeDefaults.fontSize || '14px')
-            .attr('font-weight', 'bold')
-            .style('pointer-events', 'none') // Важно: отключаем события мыши для текста
-            .text(node.label);
-    });
-}
+                
+                // Добавляем текст - отключаем события мыши для текста
+                nodeGroup.append('text')
+                    .attr('class', 'node-label')
+                    .attr('text-anchor', 'middle')
+                    .attr('dy', '0.3em')
+                    .attr('fill', node.textColor || nodeDefaults.textColor || '#ffffff')
+                    .attr('font-size', node.fontSize || nodeDefaults.fontSize || '14px')
+                    .attr('font-weight', 'bold')
+                    .style('pointer-events', 'none') // Важно: отключаем события мыши для текста
+                    .text(node.label);
+            });
+        }
 
 // Показ информации об узле
 function showNodeInfo(node) {
