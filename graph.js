@@ -108,12 +108,6 @@ function initGraph() {
                 if (node.link) {
                     window.open(node.link, '_blank');
                 }
-            })
-            .on('mouseover', function(event) {
-
-            })
-            .on('mouseout', function(event) {
-
             });
         
         const size = (node.radius || nodeDefaults.radius || 40) * 1.414; // Диагональ квадрата = сторона * √2
