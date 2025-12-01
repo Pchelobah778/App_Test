@@ -105,7 +105,7 @@ function initGraph() {
             .attr('transform', `translate(${node.x},${node.y})`);
         
         // Размер квадрата
-        const side = (node.radius || nodeDefaults.radius || 40) * 1.8;
+        const side = (node.radius) * 1.8;
         
         // Создаем квадрат
         nodeGroup.append('rect')
