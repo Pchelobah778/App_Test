@@ -81,11 +81,6 @@ function initGraph() {
                 .attr('stroke-width', edge.width || edgeDefaults.width || 2)
                 .attr('stroke-dasharray', edge.dashed ? (edge.dashArray || '5,5') : null)
                 .attr('class', 'edge-line');
-            
-            // Стрелка
-            if (edge.arrowhead || edgeDefaults.arrowhead) {
-                drawArrow(line, sourceNode, targetNode, edge, true);
-            }
         } else {
             // Прямая линия
             line.append('line')
@@ -97,15 +92,10 @@ function initGraph() {
                 .attr('stroke-width', edge.width || edgeDefaults.width || 2)
                 .attr('stroke-dasharray', edge.dashed ? (edge.dashArray || '5,5') : null)
                 .attr('class', 'edge-line');
-            
-            // Стрелка
-            if (edge.arrowhead || edgeDefaults.arrowhead) {
-                drawArrow(line, sourceNode, targetNode, edge, false);
-            }
         }
     });
     
-    // Рисуем узлы
+    // Рисуем узлы - ВСЕ КВАДРАТНЫЕ
     const nodesGroup = g.append('g').attr('class', 'nodes');
     
     nodes.forEach(node => {
@@ -120,51 +110,36 @@ function initGraph() {
                 }
             })
             .on('mouseover', function(event) {
+                // Только изменение цвета при наведении, без изменения размера
+                d3.select(this).select('.node-shape')
+                    .transition()
+                    .duration(200)
+                    .attr('fill', adjustColor(node.color || nodeDefaults.color || '#4e73df', 20));
                 
+                showNodeInfo(node);
             })
             .on('mouseout', function(event) {
-;
+                d3.select(this).select('.node-shape')
+                    .transition()
+                    .duration(200)
+                    .attr('fill', node.color || nodeDefaults.color || '#4e73df');
             });
         
-        // Рисуем форму узла
-        let shape;
-        const shapeType = node.shape || nodeDefaults.shape || 'circle';
-        const radius = node.radius || nodeDefaults.radius || 40;
+        // Рисуем квадрат (все узлы квадратные)
+        const size = (node.radius || nodeDefaults.radius || 40) * 1.414; // Диагональ квадрата = сторона * √2
+        const side = size / Math.sqrt(2); // Сторона квадрата
         
-        switch(shapeType) {
-            case 'circle':
-                shape = nodeGroup.append('circle')
-                    .attr('class', 'node-shape')
-                    .attr('r', radius)
-                    .attr('fill', node.color || nodeDefaults.color || '#4e73df')
-                    .attr('stroke', node.borderColor || nodeDefaults.borderColor || '#2e59d9')
-                    .attr('stroke-width', node.borderWidth || nodeDefaults.borderWidth || 2);
-                break;
-                
-            case 'rounded-rect':
-                shape = nodeGroup.append('rect')
-                    .attr('class', 'node-shape')
-                    .attr('x', -radius)
-                    .attr('y', -radius)
-                    .attr('width', radius * 2)
-                    .attr('height', radius * 2)
-                    .attr('rx', node.borderRadius || 10)
-                    .attr('ry', node.borderRadius || 10)
-                    .attr('fill', node.color || nodeDefaults.color || '#4e73df')
-                    .attr('stroke', node.borderColor || nodeDefaults.borderColor || '#2e59d9')
-                    .attr('stroke-width', node.borderWidth || nodeDefaults.borderWidth || 2);
-                break;
-                
-            case 'hexagon':
-                const hexagonPoints = generateHexagonPoints(radius);
-                shape = nodeGroup.append('polygon')
-                    .attr('class', 'node-shape')
-                    .attr('points', hexagonPoints)
-                    .attr('fill', node.color || nodeDefaults.color || '#4e73df')
-                    .attr('stroke', node.borderColor || nodeDefaults.borderColor || '#2e59d9')
-                    .attr('stroke-width', node.borderWidth || nodeDefaults.borderWidth || 2);
-                break;
-        }
+        nodeGroup.append('rect')
+            .attr('class', 'node-shape')
+            .attr('x', -side/2)
+            .attr('y', -side/2)
+            .attr('width', side)
+            .attr('height', side)
+            .attr('rx', node.borderRadius || 5) // Закругление углов (можно настроить)
+            .attr('ry', node.borderRadius || 5)
+            .attr('fill', node.color || nodeDefaults.color || '#4e73df')
+            .attr('stroke', node.borderColor || nodeDefaults.borderColor || '#2e59d9')
+            .attr('stroke-width', node.borderWidth || nodeDefaults.borderWidth || 2);
         
         // Добавляем текст
         nodeGroup.append('text')
@@ -178,39 +153,13 @@ function initGraph() {
     });
 }
 
-// Функция для рисования стрелок
-function drawArrow(group, sourceNode, targetNode, edge, isCurved) {
-    const arrowSize = edge.arrowSize || 8;
-    
-    // Вычисляем угол наклона линии
-    let angle;
-    if (isCurved) {
-        // Для кривых линий стрелка ставится в конечной точке
-        const dx = targetNode.x - sourceNode.x;
-        const dy = targetNode.y - sourceNode.y;
-        angle = Math.atan2(dy, dx);
-    } else {
-        angle = Math.atan2(targetNode.y - sourceNode.y, targetNode.x - sourceNode.x);
-    }
-    
-    // Координаты стрелки (в конце линии)
-    const arrowX = targetNode.x - Math.cos(angle) * (targetNode.radius || 40);
-    const arrowY = targetNode.y - Math.sin(angle) * (targetNode.radius || 40);
-    
-    // Рисуем стрелку как треугольник
-    const arrowPoints = [
-        [arrowX, arrowY],
-        [arrowX - arrowSize, arrowY - arrowSize/2],
-        [arrowX - arrowSize, arrowY + arrowSize/2]
-    ];
-    
-    group.append('polygon')
-        .attr('points', arrowPoints.map(p => p.join(',')).join(' '))
-        .attr('fill', edge.color || '#858796')
-        .attr('transform', `rotate(${angle * 180 / Math.PI}, ${arrowX}, ${arrowY})`);
+// Вспомогательная функция для изменения цвета
+function adjustColor(color, amount) {
+    // Простой способ осветлить цвет
+    return d3.color(color).brighter(amount/20);
 }
 
-// Генерация точек для шестиугольника
+// Генерация точек для шестиугольника (больше не используется, но оставлю на всякий случай)
 function generateHexagonPoints(radius) {
     const points = [];
     for (let i = 0; i < 6; i++) {

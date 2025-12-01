@@ -13,13 +13,13 @@
       "fontSize": "14px",
       "borderColor": "#2e59d9",
       "borderWidth": 2,
-      "shape": "circle"
+      "shape": "square"
     },
     "edgeDefaults": {
       "color": "#858796",
       "width": 3,
       "lineStyle": "straight",
-      "arrowhead": true,
+      "arrowhead": false,
       "arrowSize": 8,
       "curvature": 0
     }
@@ -33,7 +33,7 @@
       "y": 100,
       "color": "#4e73df",
       "radius": 60,
-      "shape": "circle",
+      "shape": "square",
       "borderColor": "#2e59d9",
       "borderWidth": 3
     },
@@ -45,8 +45,8 @@
       "y": 300,
       "color": "#1cc88a",
       "radius": 45,
-      "shape": "rounded-rect",
-      "borderRadius": 10
+      "shape": "square",
+      "borderRadius": 5
     },
     {
       "id": "thermodynamics",
@@ -56,7 +56,7 @@
       "y": 300,
       "color": "#36b9cc",
       "radius": 45,
-      "shape": "hexagon"
+      "shape": "square"
     },
     {
       "id": "electromagnetism",
@@ -66,7 +66,7 @@
       "y": 300,
       "color": "#f6c23e",
       "radius": 45,
-      "shape": "circle"
+      "shape": "square"
     },
     {
       "id": "kinematics",
@@ -76,7 +76,7 @@
       "y": 500,
       "color": "#1cc88a",
       "radius": 35,
-      "shape": "circle",
+      "shape": "square",
       "opacity": 0.9
     },
     {
@@ -87,7 +87,7 @@
       "y": 500,
       "color": "#1cc88a",
       "radius": 35,
-      "shape": "circle"
+      "shape": "square"
     }
   ],
   "edges": [
@@ -98,7 +98,7 @@
       "width": 3,
       "lineStyle": "curved",
       "curvature": 0.3,
-      "arrowhead": true
+      "arrowhead": false
     },
     {
       "source": "physics",
@@ -106,7 +106,8 @@
       "color": "#36b9cc",
       "width": 3,
       "lineStyle": "straight",
-      "dashed": false
+      "dashed": false,
+      "arrowhead": false
     },
     {
       "source": "physics",
@@ -115,8 +116,7 @@
       "width": 4,
       "lineStyle": "curved",
       "curvature": -0.3,
-      "arrowhead": true,
-      "arrowSize": 10
+      "arrowhead": false
     },
     {
       "source": "mechanics",
@@ -133,7 +133,8 @@
       "width": 2,
       "lineStyle": "straight",
       "dashed": true,
-      "dashArray": "5,5"
+      "dashArray": "5,5",
+      "arrowhead": false
     }
   ]
 }
