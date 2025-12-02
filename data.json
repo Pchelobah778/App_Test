@@ -1,120 +1,102 @@
 {
-  "settings": {
-    "canvas": {
-      "width": 1200,
-      "height": 800,
-      "backgroundColor": "#f8f9fa",
-      "padding": 50
-    },
-    "nodeDefaults": {
-      "radius": 40,
-      "color": "#4e73df",
-      "textColor": "#ffffff",
-      "fontSize": "14px",
-      "borderColor": "#2e59d9",
-      "borderWidth": 2,
-      "shape": "square"
-    },
-    "edgeDefaults": {
-      "color": "#858796",
-      "width": 3,
-      "lineStyle": "straight",
-      "arrowhead": false,
-      "arrowSize": 8,
-      "curvature": 0
-    }
-  },
-  "nodes": [
-    {
-      "id": "physics",
-      "label": "Физика",
-      "link": "notes/physics.html",
-      "x": 600,
-      "y": 100,
-      "color": "#4e73df",
-      "radius": 60,
-      "shape": "square",
-      "borderColor": "#2e59d9",
-      "borderWidth": 3
-    },
-    {
-      "id": "mechanics",
-      "label": "Механика",
-      "link": "notes/mechanics.html",
-      "x": 400,
-      "y": 300,
-      "color": "#1cc88a",
-      "radius": 45,
-      "shape": "square",
-      "borderRadius": 5
-    },
-    {
-      "id": "kinematics",
-      "label": "Кинематика",
-      "link": "notes/kinematics.html",
-      "x": 300,
-      "y": 500,
-      "color": "#1cc88a",
-      "radius": 35,
-      "shape": "square",
-      "opacity": 0.9
-    },
-    {
-      "id": "dynamics",
-      "label": "Динамика",
-      "link": "notes/dynamics.html",
-      "x": 500,
-      "y": 500,
-      "color": "#1cc88a",
-      "radius": 35,
-      "shape": "square"
-    }
-  ],
-  "edges": [
-    {
-      "source": "physics",
-      "target": "mechanics",
-      "color": "#1cc88a",
-      "width": 3,
-      "lineStyle": "curved",
-      "curvature": 0.3,
-      "arrowhead": false
-    },
-    {
-      "source": "physics",
-      "target": "thermodynamics",
-      "color": "#36b9cc",
-      "width": 3,
-      "lineStyle": "straight",
-      "dashed": false,
-      "arrowhead": false
-    },
-    {
-      "source": "physics",
-      "target": "electromagnetism",
-      "color": "#f6c23e",
-      "width": 4,
-      "lineStyle": "curved",
-      "curvature": -0.3,
-      "arrowhead": false
-    },
-    {
-      "source": "mechanics",
-      "target": "kinematics",
-      "color": "#1cc88a",
-      "width": 2,
-      "lineStyle": "straight",
-      "arrowhead": false
-    },
-    {
-      "source": "mechanics",
-      "target": "dynamics",
-      "color": "#1cc88a",
-      "width": 2,
-      "lineStyle": "straight",
-      "dashed": true,
-      "dashArray": "5,5",
-      "arrowhead": false
-    }
-  ]
+    "nodes": [
+        {
+            "id": "mechanics",
+            "name": "Механика",
+            "x": 400,
+            "y": 100,
+            "size": 40,
+            "color": {
+                "type": "radial",
+                "stops": [
+                    {"offset": "0%", "color": "#FF6B6B"},
+                    {"offset": "100%", "color": "#C92A2A"}
+                ]
+            },
+            "description": "Раздел физики, изучающий движение тел",
+            "url": "nodes/mechanics/mechanics.html"
+        },
+        {
+            "id": "physics",
+            "name": "Физика",
+            "x": 400,
+            "y": 300,
+            "size": 50,
+            "color": {
+                "type": "linear",
+                "stops": [
+                    {"offset": "0%", "color": "#4D96FF"},
+                    {"offset": "100%", "color": "#1E56A0"}
+                ]
+            },
+            "description": "Фундаментальная наука о природе",
+            "url": "nodes/physics/physics.html"
+        },
+        {
+            "id": "math_analysis_for_ph",
+            "name": "Матан для физиков",
+            "x": 400,
+            "y": 500,
+            "size": 35,
+            "color": {
+                "type": "linear",
+                "stops": [
+                    {"offset": "0%", "color": "#6BCF7F"},
+                    {"offset": "100%", "color": "#2D9A4A"}
+                ]
+            },
+            "description": "Математический анализ для физических приложений",
+            "url": "nodes/math_analysis_for_ph/math_analysis_for_ph.html"
+        },
+        {
+            "id": "kinematics",
+            "name": "Кинематика",
+            "x": 200,
+            "y": 50,
+            "size": 25,
+            "color": "#FFA726",
+            "description": "Описание движения без учёта причин",
+            "url": "nodes/mechanics/mechanics.html#kinematics"
+        },
+        {
+            "id": "dynamics",
+            "name": "Динамика",
+            "x": 600,
+            "y": 150,
+            "size": 30,
+            "color": "#FF7043",
+            "description": "Изучение причин движения тел",
+            "url": "nodes/mechanics/mechanics.html#dynamics"
+        }
+    ],
+    "links": [
+        {
+            "source": "physics",
+            "target": "mechanics",
+            "curvature": 0.3,
+            "color": "#3498db",
+            "width": 3
+        },
+        {
+            "source": "physics",
+            "target": "math_analysis_for_ph",
+            "curvature": -0.3,
+            "color": "#2ecc71",
+            "width": 3
+        },
+        {
+            "source": "mechanics",
+            "target": "kinematics",
+            "curvature": 0.2,
+            "color": "#e74c3c",
+            "width": 2
+        },
+        {
+            "source": "mechanics",
+            "target": "dynamics",
+            "curvature": 0.2,
+            "color": "#e74c3c",
+            "width": 2
+        }
+    ]
 }

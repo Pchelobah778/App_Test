@@ -3,57 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Конспекты по физике - Дерево знаний</title>
+    <title>Интерактивное дерево знаний</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🌳 Дерево знаний по физике</h1>
-            <p class="subtitle">Кликните на узел, чтобы открыть конспект</p>
+            <h1>Дерево знаний</h1>
+            <div class="controls">
+                <button id="reset-view">Сброс масштаба</button>
+                <button id="toggle-labels">Показать/скрыть подписи</button>
+            </div>
         </header>
         
-        <div class="controls">
-            <div class="zoom-controls">
-                <button onclick="zoomIn()">+ Увеличить</button>
-                <button onclick="zoomOut()">- Уменьшить</button>
-                <button onclick="resetView()">Сбросить вид</button>
-                <span id="zoom-level">100%</span>
+        <main>
+            <div id="tree-container">
+                <svg id="tree-svg"></svg>
+                <div id="tooltip" class="tooltip"></div>
             </div>
-            <div class="info-panel">
-                <div id="node-info">Выберите узел для информации</div>
+            
+            <div id="info-panel" class="info-panel">
+                <h3>Информация о выбранном узле</h3>
+                <div id="node-info">Кликните на узел для получения информации</div>
             </div>
-        </div>
-        
-        <div id="graph-container">
-            <svg id="graph-svg"></svg>
-        </div>
-        
-        <div class="legend">
-            <h3>Легенда:</h3>
-            <div class="legend-items">
-                <div class="legend-item">
-                    <div class="legend-color" style="background-color: #4e73df;"></div>
-                    <span>Основные разделы</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background-color: #1cc88a;"></div>
-                    <span>Механика</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background-color: #36b9cc;"></div>
-                    <span>Термодинамика</span>
-                </div>
-            </div>
-        </div>
+        </main>
         
         <footer>
-            <p>Для редактирования дерева отредактируйте <code>data.json</code></p>
-            <p>Конспекты находятся в папке <code>notes/</code></p>
+            <p>Кликните на узел для перехода к разделу</p>
         </footer>
     </div>
     
-    <script src="graph.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
