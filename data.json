@@ -91,14 +91,14 @@
             "url": "nodes/math_analysis_for_ph/math_analysis_for_ph.html#limits"
         },
         {
-            "id": "derivatives",
+            "id": "derivative",
             "name": "Производные",
             "x": 1000,
             "y": 400,
             "size": 15,
             "color": "#2ecc71",
             "description": "Дифференциальное исчисление",
-            "url": "nodes/math_analysis_for_ph/math_analysis_for_ph.html#derivatives"
+            "url": "nodes/derivative/derivative.html"
         },
         {
             "id": "optics",
