@@ -49,37 +49,6 @@
       "borderRadius": 5
     },
     {
-      "id": "math_analysis",
-      "label": "МатАн для физиков",
-      "link": "notes/math_analysis.html",
-      "x": 200,
-      "y": 300,
-      "color": "#1cc88a",
-      "radius": 45,
-      "shape": "square",
-      "borderRadius": 5
-    },
-    {
-      "id": "thermodynamics",
-      "label": "Термодинамика",
-      "link": "notes/thermodynamics.html",
-      "x": 600,
-      "y": 300,
-      "color": "#36b9cc",
-      "radius": 45,
-      "shape": "square"
-    },
-    {
-      "id": "electromagnetism",
-      "label": "Электромагнетизм",
-      "link": "notes/electromagnetism.html",
-      "x": 800,
-      "y": 300,
-      "color": "#f6c23e",
-      "radius": 45,
-      "shape": "square"
-    },
-    {
       "id": "kinematics",
       "label": "Кинематика",
       "link": "notes/kinematics.html",
