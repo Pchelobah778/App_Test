@@ -1,16 +1,32 @@
 {
     "nodes": [
         {
-            "id": "mechanics",
-            "name": "Механика",
-            "x": 400,
-            "y": 100,
-            "size": 40,
+            "id": "root",
+            "name": "Науки",
+            "x": 600,
+            "y": 50,
+            "size": 45,
             "color": {
                 "type": "radial",
                 "stops": [
-                    {"offset": "0%", "color": "#FF6B6B"},
-                    {"offset": "100%", "color": "#C92A2A"}
+                    {"offset": "0%", "color": "#FFD700"},
+                    {"offset": "100%", "color": "#FF8C00"}
+                ]
+            },
+            "description": "Корневой узел дерева знаний",
+            "url": "#"
+        },
+        {
+            "id": "mechanics",
+            "name": "Механика",
+            "x": 300,
+            "y": 200,
+            "size": 40,
+            "color": {
+                "type": "linear",
+                "stops": [
+                    {"offset": "0%", "color": "#4ECDC4"},
+                    {"offset": "100%", "color": "#44A08D"}
                 ]
             },
             "description": "Раздел физики, изучающий движение тел",
@@ -19,14 +35,14 @@
         {
             "id": "physics",
             "name": "Физика",
-            "x": 400,
-            "y": 300,
+            "x": 600,
+            "y": 200,
             "size": 50,
             "color": {
-                "type": "linear",
+                "type": "radial",
                 "stops": [
-                    {"offset": "0%", "color": "#4D96FF"},
-                    {"offset": "100%", "color": "#1E56A0"}
+                    {"offset": "0%", "color": "#FF6B6B"},
+                    {"offset": "100%", "color": "#C92A2A"}
                 ]
             },
             "description": "Фундаментальная наука о природе",
@@ -35,14 +51,14 @@
         {
             "id": "math_analysis_for_ph",
             "name": "Матан для физиков",
-            "x": 400,
-            "y": 500,
+            "x": 900,
+            "y": 200,
             "size": 35,
             "color": {
                 "type": "linear",
                 "stops": [
-                    {"offset": "0%", "color": "#6BCF7F"},
-                    {"offset": "100%", "color": "#2D9A4A"}
+                    {"offset": "0%", "color": "#A8E6CF"},
+                    {"offset": "100%", "color": "#6BCF7F"}
                 ]
             },
             "description": "Математический анализ для физических приложений",
@@ -52,51 +68,150 @@
             "id": "kinematics",
             "name": "Кинематика",
             "x": 200,
-            "y": 50,
+            "y": 350,
             "size": 25,
-            "color": "#FFA726",
+            "color": "#FFD166",
             "description": "Описание движения без учёта причин",
             "url": "nodes/mechanics/mechanics.html#kinematics"
         },
         {
             "id": "dynamics",
             "name": "Динамика",
-            "x": 600,
-            "y": 150,
+            "x": 400,
+            "y": 350,
             "size": 30,
-            "color": "#FF7043",
+            "color": "#EF476F",
             "description": "Изучение причин движения тел",
             "url": "nodes/mechanics/mechanics.html#dynamics"
+        },
+        {
+            "id": "optics",
+            "name": "Оптика",
+            "x": 500,
+            "y": 350,
+            "size": 28,
+            "color": "#118AB2",
+            "description": "Раздел физики о свете",
+            "url": "nodes/physics/physics.html#optics"
+        },
+        {
+            "id": "thermodynamics",
+            "name": "Термодинамика",
+            "x": 700,
+            "y": 350,
+            "size": 32,
+            "color": "#06D6A0",
+            "description": "Наука о тепле и энергии",
+            "url": "nodes/physics/physics.html#thermodynamics"
+        },
+        {
+            "id": "limits",
+            "name": "Пределы",
+            "x": 800,
+            "y": 350,
+            "size": 24,
+            "color": "#7209B7",
+            "description": "Основы математического анализа",
+            "url": "nodes/math_analysis_for_ph/math_analysis_for_ph.html#limits"
+        },
+        {
+            "id": "derivatives",
+            "name": "Производные",
+            "x": 1000,
+            "y": 350,
+            "size": 26,
+            "color": "#F72585",
+            "description": "Дифференциальное исчисление",
+            "url": "nodes/math_analysis_for_ph/math_analysis_for_ph.html#derivatives"
         }
     ],
     "links": [
         {
-            "source": "physics",
+            "source": "root",
             "target": "mechanics",
-            "curvature": 0.3,
-            "color": "#3498db",
-            "width": 3
+            "curvature": 0.1,
+            "color": "#4ECDC4",
+            "width": 4
         },
         {
-            "source": "physics",
+            "source": "root",
+            "target": "physics",
+            "curvature": 0,
+            "color": "#FF6B6B",
+            "width": 4
+        },
+        {
+            "source": "root",
             "target": "math_analysis_for_ph",
-            "curvature": -0.3,
-            "color": "#2ecc71",
-            "width": 3
+            "curvature": -0.1,
+            "color": "#A8E6CF",
+            "width": 4
         },
         {
             "source": "mechanics",
             "target": "kinematics",
-            "curvature": 0.2,
-            "color": "#e74c3c",
-            "width": 2
+            "curvature": 0.15,
+            "color": "#4ECDC4",
+            "width": 3,
+            "opacity": 0.8
         },
         {
             "source": "mechanics",
             "target": "dynamics",
-            "curvature": 0.2,
-            "color": "#e74c3c",
-            "width": 2
+            "curvature": -0.15,
+            "color": "#4ECDC4",
+            "width": 3,
+            "opacity": 0.8
+        },
+        {
+            "source": "physics",
+            "target": "optics",
+            "curvature": 0.15,
+            "color": "#FF6B6B",
+            "width": 3,
+            "opacity": 0.8
+        },
+        {
+            "source": "physics",
+            "target": "thermodynamics",
+            "curvature": -0.15,
+            "color": "#FF6B6B",
+            "width": 3,
+            "opacity": 0.8
+        },
+        {
+            "source": "math_analysis_for_ph",
+            "target": "limits",
+            "curvature": 0.15,
+            "color": "#A8E6CF",
+            "width": 3,
+            "opacity": 0.8
+        },
+        {
+            "source": "math_analysis_for_ph",
+            "target": "derivatives",
+            "curvature": -0.15,
+            "color": "#A8E6CF",
+            "width": 3,
+            "opacity": 0.8
+        },
+        {
+            "source": "mechanics",
+            "target": "physics",
+            "curvature": 0.3,
+            "color": "#95A5A6",
+            "width": 2,
+            "opacity": 0.6,
+            "dashed": true
+        },
+        {
+            "source": "physics",
+            "target": "math_analysis_for_ph",
+            "curvature": 0.3,
+            "color": "#95A5A6",
+            "width": 2,
+            "opacity": 0.6,
+            "dashed": true
         }
     ]
 }
