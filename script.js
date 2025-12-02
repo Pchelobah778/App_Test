@@ -23,9 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Подготавливаем данные
         prepareData(data);
         
-        // Создаем градиенты
-        createGradients(defs, data.nodes);
-        
         // Рисуем связи
         drawLinks(data);
         
@@ -61,37 +58,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function createGradients(defs, nodes) {
-        nodes.filter(node => node.color && node.color.type).forEach(node => {
-            let gradient;
-            
-            if (node.color.type === 'linear') {
-                gradient = defs.append('linearGradient')
-                    .attr('id', `gradient-${node.id}`)
-                    .attr('x1', '0%')
-                    .attr('y1', '0%')
-                    .attr('x2', '100%')
-                    .attr('y2', '100%');
-            } else {
-                gradient = defs.append('radialGradient')
-                    .attr('id', `gradient-${node.id}`)
-                    .attr('cx', '50%')
-                    .attr('cy', '50%')
-                    .attr('r', '50%')
-                    .attr('fx', '50%')
-                    .attr('fy', '50%');
-            }
-            
-            node.color.stops.forEach(stop => {
-                gradient.append('stop')
-                    .attr('offset', stop.offset)
-                    .attr('stop-color', stop.color);
-            });
-        });
+    // Функция для вычисления точки на кривой SmootherStep
+    function smootherStep(t, curvature = 0.3) {
+        // SmootherStep функция: 6t^5 - 15t^4 + 10t^3
+        const smoother = 6*Math.pow(t,5) - 15*Math.pow(t,4) + 10*Math.pow(t,3);
+        // Применяем кривизну для контроля изгиба
+        return smoother * curvature;
     }
 
     function drawLinks(data) {
-        // Функция для вычисления пути связи с кривизной
+        // Функция для вычисления пути связи
         function linkPath(d) {
             const source = typeof d.source === 'object' ? d.source : data.nodeMap[d.source];
             const target = typeof d.target === 'object' ? d.target : data.nodeMap[d.target];
@@ -103,21 +79,30 @@ document.addEventListener('DOMContentLoaded', function() {
             const endX = target.x;
             const endY = target.y;
             
-            // Вычисляем контрольные точки для кривой Безье
-            const curvature = d.curvature || 0;
-            const dx = endX - startX;
-            const dy = endY - startY;
-            const midX = (startX + endX) / 2;
-            const midY = (startY + endY) / 2;
+            // Для прямых линий
+            if (d.type === 'straight') {
+                return `M${startX},${startY} L${endX},${endY}`;
+            }
             
-            // Перпендикулярный вектор для кривизны
-            const perpX = -dy * curvature;
-            const perpY = dx * curvature;
+            // Для SmootherStep кривых
+            if (d.type === 'smoothstep') {
+                const curvature = d.curvature || 0.3;
+                const dx = endX - startX;
+                const dy = endY - startY;
+                
+                // Вычисляем контрольные точки для кубической кривой Безье
+                // используя SmootherStep для плавного изгиба
+                const cp1x = startX + dx * 0.3;
+                const cp1y = startY + dy * 0.3 + Math.abs(dx) * curvature * 0.5;
+                
+                const cp2x = startX + dx * 0.7;
+                const cp2y = startY + dy * 0.7 + Math.abs(dx) * curvature * -0.5;
+                
+                return `M${startX},${startY} C${cp1x},${cp1y} ${cp2x},${cp2y} ${endX},${endY}`;
+            }
             
-            const controlX = midX + perpX;
-            const controlY = midY + perpY;
-            
-            return `M${startX},${startY} Q${controlX},${controlY} ${endX},${endY}`;
+            // По умолчанию - прямая линия
+            return `M${startX},${startY} L${endX},${endY}`;
         }
         
         // Рисуем связи
@@ -131,20 +116,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .attr('stroke-width', d => d.width || 2)
             .attr('fill', 'none')
             .attr('opacity', d => d.opacity || 0.7)
-            .attr('stroke-dasharray', d => d.dashed ? '5,5' : null);
+            .attr('stroke-dasharray', d => d.dashed ? '5,3' : null);
     }
 
     function drawNodes(data) {
-        // Функция для получения цвета узла
-        function getNodeColor(node) {
-            if (typeof node.color === 'string') {
-                return node.color;
-            } else if (node.color && node.color.type) {
-                return `url(#gradient-${node.id})`;
-            }
-            return '#3498db';
-        }
-        
         // Рисуем узлы
         nodeGroup.selectAll('.node')
             .data(data.nodes)
@@ -153,10 +128,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .attr('class', 'node')
             .attr('cx', d => d.x)
             .attr('cy', d => d.y)
-            .attr('r', d => d.size || 10)
-            .attr('fill', getNodeColor)
+            .attr('r', d => d.size || 8)
+            .attr('fill', d => d.color || '#3498db')
             .attr('stroke', '#fff')
-            .attr('stroke-width', 2)
+            .attr('stroke-width', 1.5)
             .attr('data-id', d => d.id);
     }
 
@@ -168,8 +143,14 @@ document.addEventListener('DOMContentLoaded', function() {
             .append('text')
             .attr('class', 'node-label')
             .attr('x', d => d.x)
-            .attr('y', d => d.y - d.size - 5)
+            .attr('y', d => d.y - d.size - 3)
             .attr('text-anchor', 'middle')
+            .attr('font-size', d => {
+                // Динамический размер шрифта в зависимости от размера узла
+                if (d.size > 30) return '14px';
+                if (d.size > 20) return '12px';
+                return '10px';
+            })
             .text(d => d.name);
     }
 
@@ -187,8 +168,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Подсветка узла
                 d3.select(this)
                     .transition()
-                    .duration(200)
-                    .attr('r', d.size * 1.2);
+                    .duration(150)
+                    .attr('r', d.size * 1.3)
+                    .attr('stroke-width', 2.5);
                 
                 // Подсветка связанных элементов
                 highlightConnections(d.id, true, data);
@@ -213,8 +195,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Возврат к исходному размеру
                 d3.select(this)
                     .transition()
-                    .duration(200)
-                    .attr('r', d.size);
+                    .duration(150)
+                    .attr('r', d.size)
+                    .attr('stroke-width', 1.5);
                 
                 // Снятие подсветки
                 highlightConnections(d.id, false, data);
@@ -226,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 event.stopPropagation();
                 
                 // Анимация клика
-                d3.select(this)
+                const clickAnimation = d3.select(this)
                     .transition()
                     .duration(config.nodeClickAnimationDuration / 2)
                     .attr('r', d.size * 1.5)
@@ -239,9 +222,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Переход по ссылке (если она не ссылается на текущую страницу)
                 if (d.url && d.url !== '#') {
-                    setTimeout(() => {
+                    clickAnimation.on('end', () => {
                         window.location.href = d.url;
-                    }, config.nodeClickAnimationDuration * 2);
+                    });
                 }
             });
         
@@ -251,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Подсветка связи
                 d3.select(this)
                     .transition()
-                    .duration(200)
+                    .duration(150)
                     .attr('stroke-width', (d.width || 2) * 1.5)
                     .attr('opacity', 1);
                 
@@ -266,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Возврат связи к исходному виду
                 d3.select(this)
                     .transition()
-                    .duration(200)
+                    .duration(150)
                     .attr('stroke-width', d.width || 2)
                     .attr('opacity', d.opacity || 0.7);
                 
@@ -304,16 +287,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function updateInfoPanel(node, nodeInfo) {
+        const relatedLinks = node.links || [];
+        const connections = relatedLinks.map(link => {
+            const otherId = link.source === node.id ? link.target : link.source;
+            const otherNode = window.treeData?.nodeMap?.[otherId];
+            return otherNode ? otherNode.name : otherId;
+        }).filter(Boolean);
+        
         nodeInfo.html(`
             <h4>${node.name}</h4>
             <p class="description">${node.description || 'Описание отсутствует'}</p>
             <div class="node-details">
                 <p><strong>Координаты:</strong> (${Math.round(node.x)}, ${Math.round(node.y)})</p>
                 <p><strong>Размер узла:</strong> ${node.size}</p>
-                <p><strong>Количество связей:</strong> ${node.links.length}</p>
+                <p><strong>Цвет:</strong> <span style="color:${node.color}">${node.color}</span></p>
+                ${connections.length > 0 ? `
+                    <p><strong>Связан с:</strong> ${connections.join(', ')}</p>
+                ` : ''}
             </div>
             ${node.url && node.url !== '#' ? `
-                <a href="${node.url}" class="node-link" target="_blank">
+                <a href="${node.url}" class="node-link">
                     Перейти к разделу →
                 </a>
             ` : ''}
@@ -325,8 +318,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!node.empty()) {
             node
                 .transition()
-                .duration(200)
-                .attr('r', d => highlight ? d.size * 1.3 : d.size)
+                .duration(150)
+                .attr('r', d => highlight ? d.size * 1.4 : d.size)
+                .attr('stroke-width', highlight ? 3 : 1.5)
                 .attr('filter', highlight ? 'url(#glow)' : null);
         }
     }
@@ -376,7 +370,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function setupZoom() {
         // Создаем эффект свечения для подсветки
-        const defs = svg.select('defs');
         const filter = defs.append('filter')
             .attr('id', 'glow')
             .attr('height', '300%')
@@ -385,7 +378,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .attr('y', '-100%');
             
         filter.append('feGaussianBlur')
-            .attr('stdDeviation', '3.5')
+            .attr('stdDeviation', '2')
             .attr('result', 'coloredBlur');
             
         const feMerge = filter.append('feMerge');
@@ -396,7 +389,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Настраиваем масштабирование
         const zoom = d3.zoom()
-            .scaleExtent([0.1, 4])
+            .scaleExtent([0.3, 3])
             .on('zoom', (event) => {
                 svg.selectAll('g')
                     .attr('transform', event.transform);

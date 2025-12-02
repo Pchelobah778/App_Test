@@ -1,66 +1,42 @@
 {
     "nodes": [
         {
-            "id": "root",
-            "name": "Науки",
+            "id": "physics",
+            "name": "Физика",
             "x": 600,
-            "y": 50,
-            "size": 45,
-            "color": {
-                "type": "radial",
-                "stops": [
-                    {"offset": "0%", "color": "#FFD700"},
-                    {"offset": "100%", "color": "#FF8C00"}
-                ]
-            },
-            "description": "Корневой узел дерева знаний",
+            "y": 100,
+            "size": 35,
+            "color": "#3498db",
+            "description": "Фундаментальная наука о природе",
             "url": "#"
         },
         {
             "id": "mechanics",
             "name": "Механика",
             "x": 300,
-            "y": 200,
-            "size": 40,
-            "color": {
-                "type": "linear",
-                "stops": [
-                    {"offset": "0%", "color": "#4ECDC4"},
-                    {"offset": "100%", "color": "#44A08D"}
-                ]
-            },
+            "y": 250,
+            "size": 25,
+            "color": "#e74c3c",
             "description": "Раздел физики, изучающий движение тел",
             "url": "nodes/mechanics/mechanics.html"
         },
         {
-            "id": "physics",
-            "name": "Физика",
+            "id": "electricity",
+            "name": "Электричество",
             "x": 600,
-            "y": 200,
-            "size": 50,
-            "color": {
-                "type": "radial",
-                "stops": [
-                    {"offset": "0%", "color": "#FF6B6B"},
-                    {"offset": "100%", "color": "#C92A2A"}
-                ]
-            },
-            "description": "Фундаментальная наука о природе",
-            "url": "nodes/physics/physics.html"
+            "y": 250,
+            "size": 25,
+            "color": "#f39c12",
+            "description": "Раздел физики об электрических явлениях",
+            "url": "nodes/electricity/electricity.html"
         },
         {
             "id": "math_analysis_for_ph",
             "name": "Матан для физиков",
             "x": 900,
-            "y": 200,
-            "size": 35,
-            "color": {
-                "type": "linear",
-                "stops": [
-                    {"offset": "0%", "color": "#A8E6CF"},
-                    {"offset": "100%", "color": "#6BCF7F"}
-                ]
-            },
+            "y": 250,
+            "size": 25,
+            "color": "#2ecc71",
             "description": "Математический анализ для физических приложений",
             "url": "nodes/math_analysis_for_ph/math_analysis_for_ph.html"
         },
@@ -68,9 +44,9 @@
             "id": "kinematics",
             "name": "Кинематика",
             "x": 200,
-            "y": 350,
-            "size": 25,
-            "color": "#FFD166",
+            "y": 400,
+            "size": 18,
+            "color": "#e74c3c",
             "description": "Описание движения без учёта причин",
             "url": "nodes/mechanics/mechanics.html#kinematics"
         },
@@ -78,39 +54,39 @@
             "id": "dynamics",
             "name": "Динамика",
             "x": 400,
-            "y": 350,
-            "size": 30,
-            "color": "#EF476F",
+            "y": 400,
+            "size": 18,
+            "color": "#e74c3c",
             "description": "Изучение причин движения тел",
             "url": "nodes/mechanics/mechanics.html#dynamics"
         },
         {
-            "id": "optics",
-            "name": "Оптика",
+            "id": "electrostatics",
+            "name": "Электростатика",
             "x": 500,
-            "y": 350,
-            "size": 28,
-            "color": "#118AB2",
-            "description": "Раздел физики о свете",
-            "url": "nodes/physics/physics.html#optics"
+            "y": 400,
+            "size": 16,
+            "color": "#f39c12",
+            "description": "Электрические заряды в покое",
+            "url": "nodes/electricity/electricity.html#electrostatics"
         },
         {
-            "id": "thermodynamics",
-            "name": "Термодинамика",
+            "id": "electrodynamics",
+            "name": "Электродинамика",
             "x": 700,
-            "y": 350,
-            "size": 32,
-            "color": "#06D6A0",
-            "description": "Наука о тепле и энергии",
-            "url": "nodes/physics/physics.html#thermodynamics"
+            "y": 400,
+            "size": 16,
+            "color": "#f39c12",
+            "description": "Движение зарядов и электромагнитные поля",
+            "url": "nodes/electricity/electricity.html#electrodynamics"
         },
         {
             "id": "limits",
             "name": "Пределы",
             "x": 800,
-            "y": 350,
-            "size": 24,
-            "color": "#7209B7",
+            "y": 400,
+            "size": 15,
+            "color": "#2ecc71",
             "description": "Основы математического анализа",
             "url": "nodes/math_analysis_for_ph/math_analysis_for_ph.html#limits"
         },
@@ -118,100 +94,156 @@
             "id": "derivatives",
             "name": "Производные",
             "x": 1000,
-            "y": 350,
-            "size": 26,
-            "color": "#F72585",
+            "y": 400,
+            "size": 15,
+            "color": "#2ecc71",
             "description": "Дифференциальное исчисление",
             "url": "nodes/math_analysis_for_ph/math_analysis_for_ph.html#derivatives"
+        },
+        {
+            "id": "optics",
+            "name": "Оптика",
+            "x": 300,
+            "y": 550,
+            "size": 14,
+            "color": "#9b59b6",
+            "description": "Раздел физики о свете",
+            "url": "nodes/mechanics/mechanics.html#optics"
+        },
+        {
+            "id": "thermodynamics",
+            "name": "Термодинамика",
+            "x": 500,
+            "y": 550,
+            "size": 14,
+            "color": "#1abc9c",
+            "description": "Наука о тепле и энергии",
+            "url": "nodes/electricity/electricity.html#thermodynamics"
+        },
+        {
+            "id": "integrals",
+            "name": "Интегралы",
+            "x": 700,
+            "y": 550,
+            "size": 14,
+            "color": "#2ecc71",
+            "description": "Интегральное исчисление",
+            "url": "nodes/math_analysis_for_ph/math_analysis_for_ph.html#integrals"
         }
     ],
     "links": [
         {
-            "source": "root",
+            "source": "physics",
             "target": "mechanics",
-            "curvature": 0.1,
-            "color": "#4ECDC4",
-            "width": 4
+            "type": "straight",
+            "color": "#e74c3c",
+            "width": 3
         },
         {
-            "source": "root",
-            "target": "physics",
-            "curvature": 0,
-            "color": "#FF6B6B",
-            "width": 4
+            "source": "physics",
+            "target": "electricity",
+            "type": "straight",
+            "color": "#f39c12",
+            "width": 3
         },
         {
-            "source": "root",
+            "source": "physics",
             "target": "math_analysis_for_ph",
-            "curvature": -0.1,
-            "color": "#A8E6CF",
-            "width": 4
+            "type": "straight",
+            "color": "#2ecc71",
+            "width": 3
         },
         {
             "source": "mechanics",
             "target": "kinematics",
-            "curvature": 0.15,
-            "color": "#4ECDC4",
-            "width": 3,
-            "opacity": 0.8
+            "type": "smoothstep",
+            "color": "#e74c3c",
+            "width": 2,
+            "curvature": 0.2
         },
         {
             "source": "mechanics",
             "target": "dynamics",
-            "curvature": -0.15,
-            "color": "#4ECDC4",
-            "width": 3,
-            "opacity": 0.8
+            "type": "smoothstep",
+            "color": "#e74c3c",
+            "width": 2,
+            "curvature": -0.2
         },
         {
-            "source": "physics",
-            "target": "optics",
-            "curvature": 0.15,
-            "color": "#FF6B6B",
-            "width": 3,
-            "opacity": 0.8
+            "source": "electricity",
+            "target": "electrostatics",
+            "type": "smoothstep",
+            "color": "#f39c12",
+            "width": 2,
+            "curvature": 0.2
         },
         {
-            "source": "physics",
-            "target": "thermodynamics",
-            "curvature": -0.15,
-            "color": "#FF6B6B",
-            "width": 3,
-            "opacity": 0.8
+            "source": "electricity",
+            "target": "electrodynamics",
+            "type": "smoothstep",
+            "color": "#f39c12",
+            "width": 2,
+            "curvature": -0.2
         },
         {
             "source": "math_analysis_for_ph",
             "target": "limits",
-            "curvature": 0.15,
-            "color": "#A8E6CF",
-            "width": 3,
-            "opacity": 0.8
+            "type": "smoothstep",
+            "color": "#2ecc71",
+            "width": 2,
+            "curvature": 0.2
         },
         {
             "source": "math_analysis_for_ph",
             "target": "derivatives",
-            "curvature": -0.15,
-            "color": "#A8E6CF",
-            "width": 3,
-            "opacity": 0.8
+            "type": "smoothstep",
+            "color": "#2ecc71",
+            "width": 2,
+            "curvature": -0.2
+        },
+        {
+            "source": "kinematics",
+            "target": "optics",
+            "type": "smoothstep",
+            "color": "#9b59b6",
+            "width": 1.5,
+            "curvature": 0.1
+        },
+        {
+            "source": "electrostatics",
+            "target": "thermodynamics",
+            "type": "smoothstep",
+            "color": "#1abc9c",
+            "width": 1.5,
+            "curvature": 0.1
+        },
+        {
+            "source": "derivatives",
+            "target": "integrals",
+            "type": "smoothstep",
+            "color": "#2ecc71",
+            "width": 1.5,
+            "curvature": 0.1
         },
         {
             "source": "mechanics",
-            "target": "physics",
-            "curvature": 0.3,
-            "color": "#95A5A6",
-            "width": 2,
-            "opacity": 0.6,
-            "dashed": true
+            "target": "electricity",
+            "type": "smoothstep",
+            "color": "#95a5a6",
+            "width": 1,
+            "curvature": 0.4,
+            "dashed": true,
+            "opacity": 0.4
         },
         {
-            "source": "physics",
+            "source": "electricity",
             "target": "math_analysis_for_ph",
-            "curvature": 0.3,
-            "color": "#95A5A6",
-            "width": 2,
-            "opacity": 0.6,
-            "dashed": true
+            "type": "smoothstep",
+            "color": "#95a5a6",
+            "width": 1,
+            "curvature": -0.4,
+            "dashed": true,
+            "opacity": 0.4
         }
     ]
 }
